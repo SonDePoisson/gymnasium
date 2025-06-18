@@ -1,6 +1,7 @@
 import sys
 import os
 from stable_baselines3 import PPO
+from stable_baselines3.common.env_util import make_vec_env
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -16,13 +17,13 @@ if not os.path.exists(models_dir):
 if not os.path.exists(logdir):
     os.makedirs(logdir)
 
-env = SnekEnv()
+env = make_vec_env(SnekEnv, n_envs=8)
 env.reset()
 
 model = PPO("MlpPolicy", env, verbose=False, tensorboard_log=logdir)
 
-TIMESTEPS = 10000
-ITERS = 30
+TIMESTEPS = 100000
+ITERS = 10
 
 for iter in range(ITERS):
     print(f"{iter + 1}/{ITERS}")
