@@ -1,0 +1,4 @@
+gymnasium[mujoco]
+numpy
+torch
+tensorboard
