@@ -1,3 +1,10 @@
+.gym_env
+logs/
+models/
+
+
+### Auto generated from GitHub to ignore Python
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
