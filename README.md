@@ -18,6 +18,14 @@ git clone https://github.com/SonDePoisson/gymnasium.git
 pip install -r requirements.txt
 ```
 
+`SB3` might not install successfully through requirements file if your using ZSH. In this case, please run before :
+
+```bash
+pip install 'stable-baselines3[extra]'
+```
+
+And then run again the first install.
+
 ## Project Structure
 
 - `train/` : Training scripts for various environments.
