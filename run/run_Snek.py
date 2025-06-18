@@ -15,7 +15,7 @@ obs, info = env.reset()
 model_path = f"{models_dir}/{model_name}"
 model = PPO.load(model_path, env=env)
 
-episodes = 1
+episodes = 5
 
 for ep in range(episodes):
     print(f"Episode {ep + 1}")
@@ -25,6 +25,7 @@ for ep in range(episodes):
         action, _states = model.predict(obs)
         obs, rewards, terminated, truncated, info = env.step(action)
         done = terminated or truncated
+        if done:
+            print(f"Score : {len(env.snake_position) - 3}")
 
-print(f"Score : {len(env.snake_position) - 3}")
 env.close()
