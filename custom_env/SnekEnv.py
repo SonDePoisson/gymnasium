@@ -9,32 +9,6 @@ from collections import deque
 SNAKE_LEN_GOAL = 30
 
 
-def collision_with_apple(apple_position, score):
-    apple_position = [random.randrange(1, 50) * 10, random.randrange(1, 50) * 10]
-    score += 1
-    return apple_position, score
-
-
-def collision_with_boundaries(snake_head):
-    if (
-        snake_head[0] >= 500
-        or snake_head[0] < 0
-        or snake_head[1] >= 500
-        or snake_head[1] < 0
-    ):
-        return 1
-    else:
-        return 0
-
-
-def collision_with_self(snake_position):
-    snake_head = snake_position[0]
-    if snake_head in snake_position[1:]:
-        return 1
-    else:
-        return 0
-
-
 class SnekEnv(gym.Env):
     def __init__(self, render_mode=None):
         super(SnekEnv, self).__init__()
@@ -52,6 +26,7 @@ class SnekEnv(gym.Env):
     def step(self, action):
         self.prev_actions.append(action)
         self.img = np.zeros((500, 500, 3), dtype="uint8")
+
         # Display Apple
         cv2.rectangle(
             self.img,
@@ -84,7 +59,7 @@ class SnekEnv(gym.Env):
         apple_reward = 0
         # Increase Snake length on eating apple
         if self.snake_head == self.apple_position:
-            self.apple_position, self.score = collision_with_apple(
+            self.apple_position, self.score = self.__collision_with_apple(
                 self.apple_position, self.score
             )
             self.snake_position.insert(0, list(self.snake_head))
@@ -98,8 +73,8 @@ class SnekEnv(gym.Env):
         terminated = False
         truncated = False
         if (
-            collision_with_boundaries(self.snake_head) == 1
-            or collision_with_self(self.snake_position) == 1
+            self.__collision_with_boundaries(self.snake_head) == 1
+            or self.__collision_with_self(self.snake_position) == 1
         ):
             font = cv2.FONT_HERSHEY_SIMPLEX
             self.img = np.zeros((500, 500, 3), dtype="uint8")
@@ -205,3 +180,26 @@ class SnekEnv(gym.Env):
     def close(self):
         if self.render_mode == "human":
             cv2.destroyAllWindows()
+
+    def __collision_with_apple(apple_position, score):
+        apple_position = [random.randrange(1, 50) * 10, random.randrange(1, 50) * 10]
+        score += 1
+        return apple_position, score
+
+    def __collision_with_boundaries(snake_head):
+        if (
+            snake_head[0] >= 500
+            or snake_head[0] < 0
+            or snake_head[1] >= 500
+            or snake_head[1] < 0
+        ):
+            return 1
+        else:
+            return 0
+
+    def __collision_with_self(snake_position):
+        snake_head = snake_position[0]
+        if snake_head in snake_position[1:]:
+            return 1
+        else:
+            return 0

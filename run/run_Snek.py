@@ -25,8 +25,6 @@ for ep in range(episodes):
         action, _states = model.predict(obs)
         obs, rewards, terminated, truncated, info = env.step(action)
         done = terminated or truncated
-        # print(f"{rewards=}|{terminated=}|{truncated=}")
-        # env.render()
 
 print(f"Score : {len(env.snake_position) - 3}")
 env.close()
