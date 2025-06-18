@@ -58,6 +58,14 @@ tensorboard --logdir logs/
 
 Then open the provided URL in your browser.
 
+## Sources
+
+[PythonProgramming SB3 Tuto](https://pythonprogramming.net/introduction-reinforcement-learning-stable-baselines-3-tutorial/)
+
+[Gymnasium Doc](https://gymnasium.farama.org)
+
+[SB3 Doc](https://stable-baselines3.readthedocs.io/en/master/index.html)
+
 ## Author
 
 Project by Clément Poisson.
