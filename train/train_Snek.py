@@ -22,9 +22,10 @@ env.reset()
 model = PPO("MlpPolicy", env, verbose=False, tensorboard_log=logdir)
 
 TIMESTEPS = 10000
-iters = 0
-while True:
-    iters += 1
+ITERS = 30
+
+for iter in range(ITERS):
+    print(f"{iter + 1}/{ITERS}")
     model.learn(
         total_timesteps=TIMESTEPS,
         reset_num_timesteps=False,
