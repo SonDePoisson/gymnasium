@@ -162,8 +162,9 @@ class SnekEnv(gym.Env):
             self.snake_head[1] += 10
         elif self.button_direction == 3:
             self.snake_head[1] -= 10
+        self.snake_position.insert(0, list(self.snake_head))
 
-    def __collision_with_apple(self):
+    def __create_new_apple(self):
         self.apple_position = [
             random.randrange(1, 50) * 10,
             random.randrange(1, 50) * 10,
@@ -172,12 +173,10 @@ class SnekEnv(gym.Env):
 
     def __is_apple_collision(self):
         if self.snake_head == self.apple_position:
-            self.__collision_with_apple()
-            self.snake_position.insert(0, list(self.snake_head))
+            self.__create_new_apple()
             self.is_apple_reward = True
 
         else:
-            self.snake_position.insert(0, list(self.snake_head))
             self.snake_position.pop()
 
     def __collision_with_boundaries(self):
@@ -192,8 +191,8 @@ class SnekEnv(gym.Env):
             return 0
 
     def __collision_with_self(self):
-        # self.snake_head = self.snake_position[0]
         if self.snake_head in self.snake_position[1:]:
+            print("[WARNING]: Self Collision !")
             return 1
         else:
             return 0
