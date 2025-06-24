@@ -52,6 +52,8 @@ class SnekEnv(gym.Env):
         apple_delta_x = self.apple_position[0] - head_x
         apple_delta_y = self.apple_position[1] - head_y
 
+        score = self.score
+
         # create observation:
         observation = [
             head_x,
@@ -59,6 +61,7 @@ class SnekEnv(gym.Env):
             apple_delta_x,
             apple_delta_y,
             snake_length,
+            score,
         ] + list(self.prev_actions)
         observation = np.array(observation)
 
@@ -92,6 +95,8 @@ class SnekEnv(gym.Env):
         apple_delta_x = self.apple_position[0] - head_x
         apple_delta_y = self.apple_position[1] - head_y
 
+        score = self.score
+
         self.prev_actions = deque(
             maxlen=SNAKE_LEN_GOAL
         )  # however long we aspire the snake to be
@@ -105,6 +110,7 @@ class SnekEnv(gym.Env):
             apple_delta_x,
             apple_delta_y,
             snake_length,
+            score,
         ] + list(self.prev_actions)
         observation = np.array(observation)
 
@@ -118,7 +124,7 @@ class SnekEnv(gym.Env):
         if self.render_mode == "human":
             cv2.imshow("a", self.img)
             cv2.waitKey(1)
-            time.sleep(0.3)
+            time.sleep(0.1)
 
     def close(self):
         if self.render_mode == "human":
