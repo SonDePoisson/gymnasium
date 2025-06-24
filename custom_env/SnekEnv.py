@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 import random
 from collections import deque
+import time
 
 SNAKE_LEN_GOAL = 30
 
@@ -117,6 +118,7 @@ class SnekEnv(gym.Env):
         if self.render_mode == "human":
             cv2.imshow("a", self.img)
             cv2.waitKey(1)
+            time.sleep(0.3)
 
     def close(self):
         if self.render_mode == "human":
@@ -184,14 +186,14 @@ class SnekEnv(gym.Env):
             return 0
 
     def __collision_with_self(self):
-        self.snake_head = self.snake_position[0]
+        # self.snake_head = self.snake_position[0]
         if self.snake_head in self.snake_position[1:]:
             return 1
         else:
             return 0
 
     def __is_kill_collision(self):
-        if self.__collision_with_boundaries() == 1 or self.__collision_with_self() == 1:
+        if self.__collision_with_boundaries() or self.__collision_with_self():
             font = cv2.FONT_HERSHEY_SIMPLEX
             self.img = np.zeros((500, 500, 3), dtype="uint8")
             cv2.putText(
@@ -209,7 +211,7 @@ class SnekEnv(gym.Env):
     def __reward(self):
         apple_reward = 0
         if self.is_apple_reward:
-            apple_reward = 10000
+            apple_reward = 1000
 
         kill_reward = 0
         if self.terminated:
