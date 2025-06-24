@@ -20,7 +20,7 @@ class SnekEnv(gym.Env):
         self.action_space = spaces.Discrete(4)
         # Example for using image as input (channel-first; channel-last also works):
         self.observation_space = spaces.Box(
-            low=-500, high=500, shape=(5 + SNAKE_LEN_GOAL,), dtype=np.float32
+            low=-500, high=500, shape=(6 + SNAKE_LEN_GOAL,), dtype=np.float32
         )
         self.img = np.zeros((500, 500, 3), dtype="uint8")
 
