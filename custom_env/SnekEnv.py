@@ -29,13 +29,30 @@ class SnekEnv(gym.Env):
         self.terminated = False
         self.truncated = False
         self.is_apple_reward = False
+        self.is_boundaries_reward = False
+        self.is_self_collision_reward = False
+        self.is_backward_reward = False
 
-        if self.debug:
-            action_int = int(action)
-            action_str = {0: "LEFT", 1: "RIGHT", 2: "DOWN", 3: "UP"}.get(
-                action_int, "UNKNOWN"
-            )
-            print(f"[DEBUG] Action : {action_str}")
+        # if self.debug:
+        #     action_int = int(action)
+        #     action_str = {0: "LEFT", 1: "RIGHT", 2: "DOWN", 3: "UP"}.get(
+        #         action_int, "UNKNOWN"
+        #     )
+        #     # print(f"[DEBUG] Action : {action_str}")
+
+        if len(self.prev_actions) > 0:
+            prev_action = int(self.prev_actions[-1])
+            curr_action = int(action)
+            # 0: gauche, 1: droite, 2: bas, 3: haut
+            if (
+                (prev_action == 0 and curr_action == 1)
+                or (prev_action == 1 and curr_action == 0)
+                or (prev_action == 2 and curr_action == 3)
+                or (prev_action == 3 and curr_action == 2)
+            ):
+                self.is_backward_reward = True
+                if self.debug:
+                    print("[WARNING]: Backward action !")
 
         self.prev_actions.append(action)
 
@@ -91,6 +108,8 @@ class SnekEnv(gym.Env):
         self.button_direction = 1
         self.snake_head = [250, 250]
 
+        self.reward = 0
+        self.total_reward = 0
         self.prev_reward = 0
 
         self.done = False
@@ -196,6 +215,7 @@ class SnekEnv(gym.Env):
         ):
             if self.debug:
                 print("[WARNING]: Bundaries Collision !")
+            self.is_boundaries_reward = True
             return 1
         else:
             return 0
@@ -204,6 +224,7 @@ class SnekEnv(gym.Env):
         if self.snake_head in self.snake_position[1:]:
             if self.debug:
                 print("[WARNING]: Self Collision !")
+            self.is_self_collision_reward = True
             return 1
         else:
             return 0
@@ -226,19 +247,36 @@ class SnekEnv(gym.Env):
 
     def __reward(self):
         apple_reward = 0
+        self_collision_reward = 0
+        boundaries_reward = 0
+        backward_reward = 0
+        step_reward = -0.1
+
         if self.is_apple_reward:
-            apple_reward = 1000
+            apple_reward = 100
 
-        kill_reward = 0
-        if self.terminated:
-            self.kill_reward = -1000
+        if self.is_self_collision_reward:
+            self_collision_reward = -10
 
-        euclidean_dist_to_apple = np.linalg.norm(
-            np.array(self.snake_head) - np.array(self.apple_position)
-        )
+        if self.is_boundaries_reward:
+            boundaries_reward = -10
+
+        if self.is_backward_reward:
+            backward_reward = -10
+
+        apple_delta_x = self.apple_position[0] - self.snake_head[0]
+        distance_x_reward = -abs(apple_delta_x) / 10
+        apple_delta_y = self.apple_position[1] - self.snake_head[1]
+        distance_y_reward = -abs(apple_delta_y) / 10
 
         self.total_reward = (
-            (250 - euclidean_dist_to_apple) + apple_reward + kill_reward
-        ) / 100
+            distance_x_reward
+            + distance_y_reward
+            + apple_reward
+            + self_collision_reward
+            + boundaries_reward
+            + backward_reward
+            + step_reward
+        )
         self.reward = self.total_reward - self.prev_reward
         self.prev_reward = self.total_reward

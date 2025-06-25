@@ -23,7 +23,7 @@ env.reset()
 model = PPO("MlpPolicy", env, verbose=False, tensorboard_log=logdir)
 
 TIMESTEPS = 100000
-ITERS = 10
+ITERS = 100
 
 for iter in range(ITERS):
     print(f"{iter + 1}/{ITERS}")
