@@ -11,9 +11,10 @@ SNAKE_LEN_GOAL = 30
 
 
 class SnekEnv(gym.Env):
-    def __init__(self, render_mode=None):
+    def __init__(self, render_mode=None, debug=False):
         super(SnekEnv, self).__init__()
         self.render_mode = render_mode
+        self.debug = debug
         # Define action and observation space
         # They must be gym.spaces objects
         # Example when using discrete actions:
@@ -28,6 +29,13 @@ class SnekEnv(gym.Env):
         self.terminated = False
         self.truncated = False
         self.is_apple_reward = False
+
+        if self.debug:
+            action_int = int(action)
+            action_str = {0: "LEFT", 1: "RIGHT", 2: "DOWN", 3: "UP"}.get(
+                action_int, "UNKNOWN"
+            )
+            print(f"[DEBUG] Action : {action_str}")
 
         self.prev_actions.append(action)
 
@@ -186,6 +194,7 @@ class SnekEnv(gym.Env):
             or self.snake_head[1] >= 500
             or self.snake_head[1] < 0
         ):
+            print("[WARNING]: Bundaries Collision !")
             return 1
         else:
             return 0

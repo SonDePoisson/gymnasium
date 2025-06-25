@@ -9,7 +9,7 @@ from custom_env.SnekEnv import SnekEnv
 model_name = "Snek"
 models_dir = "models"
 
-env = SnekEnv(render_mode="human")
+env = SnekEnv(render_mode=None, debug=True)
 obs, info = env.reset()
 
 model_path = f"{models_dir}/{model_name}"
