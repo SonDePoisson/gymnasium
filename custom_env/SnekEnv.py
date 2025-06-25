@@ -250,24 +250,24 @@ class SnekEnv(gym.Env):
         self_collision_reward = 0
         boundaries_reward = 0
         backward_reward = 0
-        step_reward = -0.1
+        step_reward = 0
 
         if self.is_apple_reward:
             apple_reward = 100
 
         if self.is_self_collision_reward:
-            self_collision_reward = -10
+            self_collision_reward = -1
 
         if self.is_boundaries_reward:
-            boundaries_reward = -10
+            boundaries_reward = -1
 
         if self.is_backward_reward:
-            backward_reward = -10
+            backward_reward = -1
 
         apple_delta_x = self.apple_position[0] - self.snake_head[0]
-        distance_x_reward = -abs(apple_delta_x) / 10
+        distance_x_reward = -abs(apple_delta_x) / 100
         apple_delta_y = self.apple_position[1] - self.snake_head[1]
-        distance_y_reward = -abs(apple_delta_y) / 10
+        distance_y_reward = -abs(apple_delta_y) / 100
 
         self.total_reward = (
             distance_x_reward
