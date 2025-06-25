@@ -194,14 +194,16 @@ class SnekEnv(gym.Env):
             or self.snake_head[1] >= 500
             or self.snake_head[1] < 0
         ):
-            print("[WARNING]: Bundaries Collision !")
+            if self.debug:
+                print("[WARNING]: Bundaries Collision !")
             return 1
         else:
             return 0
 
     def __collision_with_self(self):
         if self.snake_head in self.snake_position[1:]:
-            print("[WARNING]: Self Collision !")
+            if self.debug:
+                print("[WARNING]: Self Collision !")
             return 1
         else:
             return 0
