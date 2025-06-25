@@ -31,8 +31,6 @@ class SnekEnv(gym.Env):
 
         self.prev_actions.append(action)
 
-        self.__game_display()
-
         self.button_direction = action
         # Change the head position based on the button direction
         self.__do_action()
@@ -66,6 +64,7 @@ class SnekEnv(gym.Env):
         observation = np.array(observation)
 
         # Affichage uniquement si render_mode == "human"
+        self.__game_display()
         if self.render_mode == "human":
             self.render()
 
@@ -115,6 +114,7 @@ class SnekEnv(gym.Env):
         observation = np.array(observation)
 
         # Affichage uniquement si render_mode == "human"
+        self.__game_display()
         if self.render_mode == "human":
             self.render()
 
