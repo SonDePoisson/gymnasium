@@ -77,7 +77,3 @@ Then open the provided URL in your browser.
 ## Author
 
 Project by Clément Poisson.
-
----
-
-Feel free to adapt this README to your specific
