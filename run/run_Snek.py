@@ -18,6 +18,7 @@ model = PPO.load(model_path, env=env)
 episodes = 30
 
 for ep in range(episodes):
+    print("--------------------------")
     print(f"Episode {ep + 1}")
     obs, info = env.reset()
     done = False
