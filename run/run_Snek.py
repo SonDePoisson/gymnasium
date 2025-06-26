@@ -9,13 +9,13 @@ from custom_env.SnekEnv import SnekEnv
 model_name = "Snek"
 models_dir = "models"
 
-env = SnekEnv(render_mode=None, debug=True)
+env = SnekEnv(render_mode="human", debug=True)
 obs, info = env.reset()
 
 model_path = f"{models_dir}/{model_name}"
 model = PPO.load(model_path, env=env)
 
-episodes = 30
+episodes = 3
 
 for ep in range(episodes):
     print("--------------------------")
