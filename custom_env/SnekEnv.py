@@ -270,12 +270,12 @@ class SnekEnv(gym.Env):
         distance = abs(apple_delta_x) + abs(apple_delta_y)
         distance_reward = 1 - (distance / max_distance)
 
-        w_apple = 1
-        w_self_collision = 1
-        w_boundaries = 1
-        w_backward = 1
+        w_apple = 100
+        w_self_collision = 10
+        w_boundaries = 10
+        w_backward = 0
         w_step = 0
-        w_distance = 1
+        w_distance = 10
 
         self.total_reward = (
             w_apple * apple_reward
